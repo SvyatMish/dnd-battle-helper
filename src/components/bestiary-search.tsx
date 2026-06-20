@@ -1,6 +1,6 @@
 import { type ChangeEvent } from "react";
 import { useDebounceFn } from "@reactuses/core";
-import { useGetBestiary } from "../queries/use-get-bestiary.ts";
+import { useGetBestiary } from "../queries/bestiary.ts";
 
 export const BestiarySearch: React.FC = () => {
   const searchQuery = useGetBestiary();

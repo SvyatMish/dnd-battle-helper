@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -7,14 +7,21 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 import { type Monster } from "../types/bestiary.ts";
-import { useGetBestiary } from "../queries/use-get-bestiary.ts";
+import { useDeleteMonster } from "../queries/bestiary.ts";
 
 const BestiaryItem: React.FC<{ monster: Monster }> = ({ monster }) => {
+  const deleteMutation = useDeleteMonster();
+  const handleDelete = useCallback(async () => {
+    await deleteMutation.mutateAsync(monster.id);
+  }, [monster.id]);
   return (
     <div>
       <Box sx={{ width: 275 }}>
         <Card variant="outlined">
           <CardContent>
+            <Typography sx={{ color: "text.secondary" }}>
+              ID: {monster.id}
+            </Typography>
             <Typography variant="h5" component="div">
               {monster.name}
             </Typography>
@@ -29,7 +36,12 @@ const BestiaryItem: React.FC<{ monster: Monster }> = ({ monster }) => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button variant="contained" size="small">
+            <Button
+              loading={deleteMutation.isPending}
+              onClick={handleDelete}
+              variant="contained"
+              size="small"
+            >
               Удалить
             </Button>
           </CardActions>
@@ -39,19 +51,17 @@ const BestiaryItem: React.FC<{ monster: Monster }> = ({ monster }) => {
   );
 };
 
-export const MonsterList: React.FC = () => {
-  const bestiaryQuery = useGetBestiary();
-
-  if (bestiaryQuery.isLoading) {
+export const MonsterList: React.FC<{
+  monsters: Monster[];
+  isLoading: boolean;
+}> = ({ monsters, isLoading }) => {
+  if (isLoading) {
     return "Loading...";
   }
 
-  if (!bestiaryQuery.data) {
-    return "no data";
-  }
   return (
     <div className="flex space-y-2 space-x-2 flex-wrap">
-      {bestiaryQuery.data.map((item) => (
+      {monsters.map((item) => (
         <BestiaryItem key={item.id} monster={item} />
       ))}
     </div>
