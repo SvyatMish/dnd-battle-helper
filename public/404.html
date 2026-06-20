@@ -9,4 +9,13 @@
 <body>
 <div>not found kek lol</div>
 </body>
+<script>
+    const pathname = window.location.pathname;
+    console.log(pathname, window.location)
+    const page = pathname.split('/')[1];
+    if (page) {
+        const newHref = window.location.href.replace(`/${page}`, `?from=${page}`)
+        window.location.replace(newHref);
+    }
+</script>
 </html>
