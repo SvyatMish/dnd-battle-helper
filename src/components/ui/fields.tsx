@@ -10,6 +10,7 @@ interface GenericTextfieldProps<
 > extends UseControllerProps<T> {
   label: string;
   disabled?: boolean;
+  size?: "small" | "medium";
 }
 
 export function Input<T extends FieldValues>({
@@ -17,6 +18,7 @@ export function Input<T extends FieldValues>({
   control,
   label,
   disabled = false,
+  size = "medium",
 }: GenericTextfieldProps<T>) {
   return (
     <Controller
@@ -28,6 +30,7 @@ export function Input<T extends FieldValues>({
           fullWidth
           disabled={disabled}
           variant="outlined"
+          size={size}
         />
       )}
       name={name}

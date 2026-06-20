@@ -25,9 +25,17 @@ export const AddMonsterForm: React.FC = () => {
     [reset],
   );
   return (
-    <form onSubmit={handleSubmit(onsubmit)}>
+    <form
+      className="grid grid-cols-2 gap-2 max-w-300 mx-auto"
+      onSubmit={handleSubmit(onsubmit)}
+    >
       <Input name="name" control={control} label="Название" />
-      <Button type="submit">Создать</Button>
+      <Input name="hp" control={control} label="Хп" />
+      <Input name="ac" control={control} label="Броня" />
+      <Input name="initiative" control={control} label="Инициатива" />
+      <Button variant="contained" type="submit">
+        Создать
+      </Button>
     </form>
   );
 };

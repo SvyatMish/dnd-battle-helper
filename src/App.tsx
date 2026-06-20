@@ -6,12 +6,26 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useEffect } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { Button } from "@mui/material";
 
 import { BattlePage } from "./pages/battle-page.tsx";
 import { BestiaryPage } from "./pages/bestiary-page.tsx";
+
+const queryClient = new QueryClient();
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: "#dbd6d5",
+    },
+    text: {
+      primary: "#3b3534",
+    },
+  },
+});
 
 function App() {
   const location = useLocation();
@@ -29,13 +43,21 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <nav>
-        <Link to="/">Бой</Link> | <Link to="/bestiary">Бестриарий</Link>
-      </nav>
-      <Routes>
-        <Route path="/" element={<BattlePage />} />
-        <Route path="/bestiary" element={<BestiaryPage />} />
-      </Routes>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <nav>
+          <Link to="/">
+            <Button>Бой</Button>
+          </Link>
+          <Link to="/bestiary">
+            <Button>Бестриарий</Button>
+          </Link>
+        </nav>
+        <Routes>
+          <Route path="/" element={<BattlePage />} />
+          <Route path="/bestiary" element={<BestiaryPage />} />
+        </Routes>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
