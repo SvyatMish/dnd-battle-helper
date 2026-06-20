@@ -6,10 +6,11 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-function Home() {
-  return <h1>Home12</h1>;
-}
+const queryClient = new QueryClient();
+
+import { BattlePage } from "./pages/battle-page.tsx";
 
 function Battle() {
   return <h1>Battle1</h1>;
@@ -30,15 +31,15 @@ function App() {
   }, []);
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <nav>
         <Link to="/">Home</Link> | <Link to="/battle">Battle</Link>
       </nav>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<BattlePage />} />
         <Route path="/battle" element={<Battle />} />
       </Routes>
-    </>
+    </QueryClientProvider>
   );
 }
 
