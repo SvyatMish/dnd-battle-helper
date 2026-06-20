@@ -5,7 +5,7 @@ function Home() {
 }
 
 function Battle() {
-  return <h1>Battle</h1>
+  return <h1>Battle1</h1>
 }
 
 function App() {
