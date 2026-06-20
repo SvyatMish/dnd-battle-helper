@@ -16,9 +16,7 @@ function App() {
     useEffect(() => {
         if (location.search) {
             const searchParams = new URLSearchParams(location.search);
-            console.log(searchParams);
             const redirectUrl = searchParams.get('redirectUrl');
-            console.log('redirectUrl', redirectUrl);
             if (redirectUrl) {
                 navigate(redirectUrl, {replace: true});
             }

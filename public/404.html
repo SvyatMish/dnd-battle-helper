@@ -11,13 +11,11 @@
 </body>
 <script>
     const pathname = window.location.pathname;
-    console.log('pathname', pathname, window.location.href)
     const pathSplit = pathname.split('/').filter((item) => Boolean(item));
     if (pathSplit.length > 1) {
         pathSplit.shift();
         const redirectPath = pathSplit.join('/')
         const newHref = window.location.href.replace(`/${redirectPath}`, `?redirectUrl=${redirectPath}`)
-        console.log('newHref', newHref);
         window.location.replace(newHref);
     }
 </script>
