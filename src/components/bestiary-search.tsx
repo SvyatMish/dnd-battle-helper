@@ -1,19 +1,21 @@
 import { type ChangeEvent } from "react";
 import { useDebounceFn } from "@reactuses/core";
-// import { useSearchBestiary } from "../queries/use-search-bestiary.ts";
-import { fetchMonsters } from "../queries/use-search-bestiary.ts";
+import { useGetBestiary } from "../queries/use-get-bestiary.ts";
 
 export const BestiarySearch: React.FC = () => {
-  // const searchQuery = useSearchBestiary();
+  const searchQuery = useGetBestiary();
   const { run } = useDebounceFn(
     async (v: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-      // const value = v.target.value || "";
       console.log(v.target.value);
-      const result = await fetchMonsters();
-      console.log(result);
     },
     500,
   );
 
-  return <input onChange={run} placeholder="Имя" type="text" />;
+  return (
+    <div>
+      <input onChange={run} placeholder="Имя" type="text" />
+      {searchQuery.isLoading && "loading..."}
+      {searchQuery.data && JSON.stringify(searchQuery.data, null, 2)}
+    </div>
+  );
 };

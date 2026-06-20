@@ -1,11 +1,11 @@
 import React from "react";
 
-import { BestiarySearch } from "../components";
+import { BestiarySearch } from "../components/bestiary-search.tsx";
 
 export const BattlePage: React.FC = () => {
   return (
     <div>
-      <h1>Battle1</h1>
+      <h1>Бой</h1>
       <BestiarySearch />
     </div>
   );

@@ -11,10 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 import { BattlePage } from "./pages/battle-page.tsx";
-
-function Battle() {
-  return <h1>Battle1</h1>;
-}
+import { BestiaryPage } from "./pages/bestiary-page.tsx";
 
 function App() {
   const location = useLocation();
@@ -33,11 +30,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <nav>
-        <Link to="/">Home</Link> | <Link to="/battle">Battle</Link>
+        <Link to="/">Бой</Link> | <Link to="/bestiary">Бестриарий</Link>
       </nav>
       <Routes>
         <Route path="/" element={<BattlePage />} />
-        <Route path="/battle" element={<Battle />} />
+        <Route path="/bestiary" element={<BestiaryPage />} />
       </Routes>
     </QueryClientProvider>
   );
