@@ -10,9 +10,10 @@ import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useToggle } from "@reactuses/core";
 import ShieldIcon from "@mui/icons-material/Shield";
+import Button from "@mui/material/Button";
 
 import { type BattleMonster, type Monster } from "../types/bestiary.ts";
-import { NumberModal } from "./number-modal.tsx";
+import { NumberForm } from "./number-form.tsx";
 
 export const MonsterPanel: React.FC<{
   monster: Monster;
@@ -46,8 +47,8 @@ export const MonsterPanel: React.FC<{
 
 export const MonsterBattlePanel: React.FC<{
   monster: BattleMonster;
-  actions?: React.ReactNode;
-}> = ({ monster, actions }) => {
+  removeMonster: (monster: Monster) => void;
+}> = ({ monster, removeMonster }) => {
   const [initiative, setInitiative] = useState(monster.initiativeRoll);
   const [hp, setHp] = useState(monster.hp);
   const [isHealOpen, toggleHealOpen] = useToggle(false);
@@ -81,11 +82,7 @@ export const MonsterBattlePanel: React.FC<{
       if (!value) return;
       setHp((prev) => {
         const current = prev || 0;
-        console.log("prev", prev);
-        console.log("current", current);
-        console.log("value", value);
         const newHp = current - value;
-        console.log("newHp", newHp);
         monster.hp = newHp;
         return newHp;
       });
@@ -102,6 +99,9 @@ export const MonsterBattlePanel: React.FC<{
       return newHp;
     });
   }, []);
+  const handleRemove = useCallback(() => {
+    removeMonster(monster);
+  }, [monster, removeMonster]);
   return (
     <>
       <div>
@@ -111,7 +111,7 @@ export const MonsterBattlePanel: React.FC<{
               <div className="flex space-x-2 items-center">
                 <div className="relative h-6 w-6 items-center justify-center flex">
                   <ShieldIcon fontSize="medium" />
-                  <div className="absolute items-center justify-center flex top-0 left-0 h-6 w-6 text-white text-[10px]">
+                  <div className="absolute items-center justify-center flex top-0 left-0 h-6 w-6 text-white text-[12px] font-extrabold">
                     {monster.ac || 0}
                   </div>
                 </div>
@@ -162,16 +162,24 @@ export const MonsterBattlePanel: React.FC<{
                     <FavoriteIcon fontSize="large" />
                   </IconButton>
                 </div>
-                <div>{actions}</div>
+                <div>
+                  <Button
+                    onClick={handleRemove}
+                    variant="contained"
+                    size="small"
+                  >
+                    Убрать
+                  </Button>
+                </div>
               </div>
               <div>
-                <NumberModal
+                <NumberForm
                   buttonText="Нанасети урон"
                   onSubmit={damage}
                   onClose={toggleDamageOpen}
                   isOpen={isDamageOpen}
                 />
-                <NumberModal
+                <NumberForm
                   buttonText="Полечить"
                   onSubmit={heal}
                   onClose={toggleHealOpen}

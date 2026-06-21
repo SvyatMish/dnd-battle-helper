@@ -25,7 +25,6 @@ export const BattlePage: React.FC = () => {
     useState<BattleMonster[]>(getMonstersLs());
 
   const handlePickMonster = useCallback((monster: Monster) => {
-    console.log("Pick monster", monster);
     setPickedMonsters((current) => {
       const similarMonsters = current.filter(
         (item) => item.name === monster.name,
@@ -86,19 +85,7 @@ export const BattlePage: React.FC = () => {
           <MonsterBattlePanel
             key={monster.id}
             monster={monster}
-            actions={
-              <>
-                <Button
-                  onClick={() => {
-                    removeMonster(monster);
-                  }}
-                  variant="contained"
-                  size="small"
-                >
-                  Убрать
-                </Button>
-              </>
-            }
+            removeMonster={removeMonster}
           />
         ))}
       </div>

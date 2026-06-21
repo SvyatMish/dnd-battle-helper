@@ -8,7 +8,7 @@ type FormValues = {
   number?: number;
 };
 
-export const NumberModal: React.FC<{
+export const NumberForm: React.FC<{
   buttonText: string;
   onSubmit(v: number): void;
   onClose: () => void;
