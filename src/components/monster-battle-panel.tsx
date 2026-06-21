@@ -4,10 +4,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useToggle } from "@reactuses/core";
 import ShieldIcon from "@mui/icons-material/Shield";
 import Button from "@mui/material/Button";
 
@@ -20,8 +18,6 @@ export const MonsterBattlePanel: React.FC<{
 }> = ({ monster, removeMonster }) => {
   const [initiative, setInitiative] = useState(monster.initiativeRoll);
   const [hp, setHp] = useState(monster.hp);
-  const [isHealOpen, toggleHealOpen] = useToggle(false);
-  const [isDamageOpen, toggleDamageOpen] = useToggle(false);
 
   const onInitiativeChange = useCallback(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -62,7 +58,7 @@ export const MonsterBattlePanel: React.FC<{
     if (!value) return;
     setHp((prev) => {
       const current = prev || 0;
-      const newHp = +current + +value;
+      const newHp = +current + value;
       monster.hp = newHp;
       return newHp;
     });
@@ -73,7 +69,7 @@ export const MonsterBattlePanel: React.FC<{
   return (
     <>
       <div>
-        <Box sx={{ width: 500 }}>
+        <Box className="w-full">
           <Card variant="outlined">
             <CardContent>
               <div className="flex space-x-2 items-center">
@@ -87,7 +83,7 @@ export const MonsterBattlePanel: React.FC<{
                   {monster.nameStr}
                 </Typography>
               </div>
-              <div className="flex mt-2 space-x-2">
+              <div className="flex mt-2 space-x-2 items-center">
                 <div>
                   <TextField
                     onChange={onHpChange}
@@ -110,49 +106,31 @@ export const MonsterBattlePanel: React.FC<{
                     variant="outlined"
                   />
                 </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex space-x-2 mt-2">
-                  <IconButton
-                    onClick={toggleDamageOpen}
-                    color="error"
-                    aria-label="damage"
-                    size="small"
-                  >
-                    <HeartBrokenIcon fontSize="large" />
-                  </IconButton>
-                  <IconButton
-                    onClick={toggleHealOpen}
-                    color="success"
-                    aria-label="heal"
-                    size="small"
-                  >
-                    <FavoriteIcon fontSize="large" />
-                  </IconButton>
+                <div className="flex w-full justify-between items-center">
+                  <div className="flex space-x-2 items-center">
+                    <NumberForm
+                      icon={<HeartBrokenIcon fontSize="large" />}
+                      color="error"
+                      onSubmit={damage}
+                      label="Урон"
+                    />
+                    <NumberForm
+                      onSubmit={heal}
+                      color="success"
+                      label="Лечить"
+                      icon={<FavoriteIcon fontSize="large" />}
+                    />
+                  </div>
+                  <div>
+                    <Button
+                      onClick={handleRemove}
+                      variant="contained"
+                      size="small"
+                    >
+                      Убрать
+                    </Button>
+                  </div>
                 </div>
-                <div>
-                  <Button
-                    onClick={handleRemove}
-                    variant="contained"
-                    size="small"
-                  >
-                    Убрать
-                  </Button>
-                </div>
-              </div>
-              <div>
-                <NumberForm
-                  buttonText="Нанасети урон"
-                  onSubmit={damage}
-                  onClose={toggleDamageOpen}
-                  isOpen={isDamageOpen}
-                />
-                <NumberForm
-                  buttonText="Полечить"
-                  onSubmit={heal}
-                  onClose={toggleHealOpen}
-                  isOpen={isHealOpen}
-                />
               </div>
             </CardContent>
           </Card>

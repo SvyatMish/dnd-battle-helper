@@ -1,53 +1,52 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
+import { IconButton, type ButtonProps } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useCallback } from "react";
 
 import { Input } from "./ui/fields.tsx";
 type FormValues = {
-  number?: number;
+  number: string;
 };
 
 export const NumberForm: React.FC<{
-  buttonText: string;
   onSubmit(v: number): void;
-  onClose: () => void;
-  isOpen: boolean;
-}> = ({ buttonText, onSubmit, onClose, isOpen }) => {
-  const { handleSubmit, control, reset } = useForm<FormValues>({});
+  icon: React.ReactNode;
+  color?: ButtonProps["color"];
+  label: string;
+}> = ({ color, onSubmit, icon, label }) => {
+  const { handleSubmit, control, reset } = useForm<FormValues>({
+    defaultValues: { number: "" },
+  });
 
-  const handleClose = useCallback(() => {
-    reset();
-    onClose();
-  }, []);
-
-  const submitFn = useCallback((v: FormValues) => {
-    onSubmit(v.number || 0);
-    handleClose();
-  }, []);
-
-  if (!isOpen) {
-    return null;
-  }
+  const submitFn = useCallback(
+    (v: FormValues) => {
+      const value = Number(v.number);
+      if (Number.isNaN(value)) {
+        onSubmit(0);
+      } else {
+        onSubmit(value);
+      }
+      reset();
+    },
+    [reset],
+  );
 
   return (
-    <div className={"mt-2"}>
-      <form
-        onSubmit={handleSubmit(submitFn)}
-        className="grid grid-cols-2 w-full gap-2"
-      >
-        <Input
-          size="small"
-          type="number"
-          name="number"
-          control={control}
-          label="Число"
-          autoFocus={true}
-        />
-        <Button size="small" type="submit">
-          {buttonText}
-        </Button>
-      </form>
-    </div>
+    <form
+      onSubmit={handleSubmit(submitFn)}
+      className="grid grid-cols-[150px_40px] gap-2 items-center"
+    >
+      <Input
+        size="small"
+        type="number"
+        name="number"
+        control={control}
+        label={label}
+        autoFocus={true}
+      />
+      <IconButton color={color} size="small" type="submit">
+        {icon}
+      </IconButton>
+    </form>
   );
 };
