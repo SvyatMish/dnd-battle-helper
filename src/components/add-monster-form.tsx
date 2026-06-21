@@ -30,7 +30,6 @@ export const AddMonsterForm: React.FC<{ currentMonsters: Monster[] }> = ({
         return;
       }
       await addMonsterMutation.mutateAsync(values);
-      reset();
     },
     [reset, currentMonsters],
   );
