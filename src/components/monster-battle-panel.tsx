@@ -82,6 +82,13 @@ export const MonsterBattlePanel: React.FC<{
                 <Typography variant="h5" component="div">
                   {monster.nameStr}
                 </Typography>
+                {monster.initiative && (
+                  <div className="ml-2">
+                    <Typography className="text-gray-500" variant="caption">
+                      Бонус инициативы: {monster.initiative}
+                    </Typography>
+                  </div>
+                )}
               </div>
               <div className="flex mt-2 space-x-2 items-center">
                 <div>
