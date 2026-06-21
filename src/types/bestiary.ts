@@ -7,5 +7,6 @@ export type Monster = {
 };
 
 export type BattleMonster = Monster & {
-  initiativeRoll: number;
+  initiativeRoll?: number;
+  nameStr: string;
 };

@@ -49,7 +49,6 @@ export const MonstersSearch: React.FC<{
       onInputChange={handleChange}
       id="monsters-search"
       options={monsterOptions}
-      sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Поиск" />}
     />
   );

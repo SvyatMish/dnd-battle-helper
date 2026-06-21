@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, type ChangeEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -44,6 +44,30 @@ export const MonsterBattlePanel: React.FC<{
   monster: BattleMonster;
   actions?: React.ReactNode;
 }> = ({ monster, actions }) => {
+  const [initiative, setInitiative] = useState(monster.initiativeRoll);
+  const [hp, setHp] = useState(monster.hp);
+
+  const onInitiativeChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const newValue = event.target.value
+        ? Number(event.target.value)
+        : undefined;
+      setInitiative(newValue);
+      monster.initiativeRoll = newValue;
+    },
+    [],
+  );
+
+  const onHpChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const newValue = event.target.value
+        ? Number(event.target.value)
+        : undefined;
+      setHp(newValue);
+      monster.hp = newValue;
+    },
+    [],
+  );
   return (
     <div>
       <Box sx={{ width: 275 }}>
@@ -54,11 +78,19 @@ export const MonsterBattlePanel: React.FC<{
             </Typography>
 
             <Typography variant="h5" component="div">
-              {monster.name}
+              {monster.nameStr}
             </Typography>
-            <Typography sx={{ color: "text.primary", mb: 1.5 }}>
-              ХП: {monster.hp}
-            </Typography>
+            <div className="mt-2">
+              <TextField
+                onChange={onHpChange}
+                value={hp}
+                type="number"
+                id={`hp-${monster.id}`}
+                label="ХП"
+                size="small"
+                variant="outlined"
+              />
+            </div>
             <Typography sx={{ color: "text.primary", mb: 1.5 }}>
               Броня: {monster.ac}
             </Typography>
@@ -67,9 +99,10 @@ export const MonsterBattlePanel: React.FC<{
             </Typography>
             <div className="mt-2">
               <TextField
-                value={monster.initiativeRoll}
+                onChange={onInitiativeChange}
+                value={initiative}
                 type="number"
-                id={monster.id}
+                id={`initiative-${monster.id}`}
                 label="Ролл инициативы"
                 size="small"
                 variant="outlined"
