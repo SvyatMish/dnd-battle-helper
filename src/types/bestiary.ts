@@ -5,3 +5,7 @@ export type Monster = {
   ac?: number;
   initiative?: number;
 };
+
+export type BattleMonster = Monster & {
+  initiativeRoll: number;
+};

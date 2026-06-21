@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
 
-import { type Monster } from "../types/bestiary.ts";
+import { type BattleMonster, type Monster } from "../types/bestiary.ts";
 
 export const MonsterPanel: React.FC<{
   monster: Monster;
@@ -30,7 +30,7 @@ export const MonsterPanel: React.FC<{
               Броня: {monster.ac}
             </Typography>
             <Typography sx={{ color: "text.primary" }}>
-              Бонус инициативы: {monster.initiative}
+              Бонус инициативы: {monster.initiative || 0}
             </Typography>
           </CardContent>
           <CardActions>{actions}</CardActions>
@@ -41,7 +41,7 @@ export const MonsterPanel: React.FC<{
 };
 
 export const MonsterBattlePanel: React.FC<{
-  monster: Monster;
+  monster: BattleMonster;
   actions?: React.ReactNode;
 }> = ({ monster, actions }) => {
   return (
@@ -52,7 +52,7 @@ export const MonsterBattlePanel: React.FC<{
             <Typography sx={{ color: "text.secondary" }}>
               ID: {monster.id}
             </Typography>
-            <TextField type="number" id={monster.id} label="Ролл инициативы" />
+
             <Typography variant="h5" component="div">
               {monster.name}
             </Typography>
@@ -63,8 +63,18 @@ export const MonsterBattlePanel: React.FC<{
               Броня: {monster.ac}
             </Typography>
             <Typography sx={{ color: "text.primary" }}>
-              Бонус инициативы: {monster.initiative}
+              Бонус инициативы: {monster.initiative || 0}
             </Typography>
+            <div className="mt-2">
+              <TextField
+                value={monster.initiativeRoll}
+                type="number"
+                id={monster.id}
+                label="Ролл инициативы"
+                size="small"
+                variant="outlined"
+              />
+            </div>
           </CardContent>
           <CardActions>{actions}</CardActions>
         </Card>
