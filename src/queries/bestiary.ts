@@ -9,20 +9,26 @@ import {
 
 import { type Monster } from "../types/bestiary.ts";
 import { firebaseDb } from "../api/firebase.ts";
+import { useAppContext } from "../context.ts";
 
 export const MONSTERS_QUERY_KEY = "monsters";
 const monstersCollectionPath = "monsters";
 
 export const useGetBestiary = () => {
+  const appContext = useAppContext();
   return useQuery({
-    queryKey: [MONSTERS_QUERY_KEY],
+    queryKey: [MONSTERS_QUERY_KEY, appContext.showHidden],
     queryFn: async () => {
       const snapshot = await getDocs(
         collection(firebaseDb, monstersCollectionPath),
       );
-      return snapshot.docs.map(
+      let monsters = snapshot.docs.map(
         (doc) => ({ id: doc.id, ...doc.data() }) as Monster,
       );
+      if (!appContext.showHidden) {
+        monsters = monsters.filter((item) => !item.isSecret);
+      }
+      return monsters;
     },
   });
 };
@@ -36,6 +42,7 @@ export const useAddMonster = () => {
         ac: monster.ac || 0,
         hp: monster.hp || 0,
         initiative: monster.initiative || 0,
+        isSecret: Boolean(monster.isSecret),
       });
     },
     onSuccess: async () => {

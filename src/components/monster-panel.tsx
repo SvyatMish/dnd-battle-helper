@@ -23,9 +23,6 @@ export const MonsterPanel: React.FC<{
       <Box sx={{ width: 275 }}>
         <Card variant="outlined">
           <CardContent>
-            <Typography sx={{ color: "text.secondary" }}>
-              ID: {monster.id}
-            </Typography>
             <Typography variant="h5" component="div">
               {monster.name}
             </Typography>
@@ -38,6 +35,7 @@ export const MonsterPanel: React.FC<{
             <Typography sx={{ color: "text.primary" }}>
               Бонус инициативы: {monster.initiative || 0}
             </Typography>
+            {monster.isSecret && "Secret"}
           </CardContent>
           <CardActions>{actions}</CardActions>
         </Card>

@@ -4,6 +4,7 @@ export type Monster = {
   hp?: number;
   ac?: number;
   initiative?: number;
+  isSecret?: boolean;
 };
 
 export type BattleMonster = Monster & {

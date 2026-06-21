@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { TextField, Checkbox, FormControlLabel } from "@mui/material";
 import {
   Controller,
   type UseControllerProps,
@@ -37,6 +37,37 @@ export function Input<T extends FieldValues>({
           size={size}
           type={type}
           autoFocus={autoFocus}
+        />
+      )}
+      name={name}
+      control={control}
+    />
+  );
+}
+
+interface GenericCheckboxProps<
+  T extends FieldValues,
+> extends UseControllerProps<T> {
+  disabled?: boolean;
+  size?: "small" | "medium";
+  label: string;
+}
+
+export function CheckboxInput<T extends FieldValues>({
+  name,
+  control,
+  disabled = false,
+  size = "medium",
+  label,
+}: GenericCheckboxProps<T>) {
+  return (
+    <Controller
+      render={({ field }) => (
+        <FormControlLabel
+          control={
+            <Checkbox {...field} id={name} disabled={disabled} size={size} />
+          }
+          label={label}
         />
       )}
       name={name}
