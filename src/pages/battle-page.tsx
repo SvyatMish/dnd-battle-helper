@@ -72,7 +72,7 @@ export const BattlePage: React.FC = () => {
           Отсортировать
         </Button>
       </div>
-      <div className="p-4 flex flex-col space-y-4">
+      <div className="px-2 flex flex-col space-y-4">
         {pickedMonsters.map((monster) => (
           <MonsterBattlePanel
             key={monster.id}

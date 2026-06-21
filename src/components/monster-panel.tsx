@@ -70,43 +70,47 @@ export const MonsterBattlePanel: React.FC<{
   );
   return (
     <div>
-      <Box sx={{ width: 275 }}>
+      <Box sx={{ width: 500 }}>
         <Card variant="outlined">
           <CardContent>
-            <Typography sx={{ color: "text.secondary" }}>
-              ID: {monster.id}
-            </Typography>
-
             <Typography variant="h5" component="div">
               {monster.nameStr}
             </Typography>
-            <div className="mt-2">
-              <TextField
-                onChange={onHpChange}
-                value={hp}
-                type="number"
-                id={`hp-${monster.id}`}
-                label="ХП"
-                size="small"
-                variant="outlined"
-              />
+            <div className="flex mt-2 space-x-2">
+              <div>
+                <TextField
+                  onChange={onHpChange}
+                  value={hp}
+                  type="number"
+                  id={`hp-${monster.id}`}
+                  label="Здоровье"
+                  size="small"
+                  variant="outlined"
+                />
+              </div>
+              <div>
+                <TextField
+                  onChange={onInitiativeChange}
+                  value={initiative}
+                  type="number"
+                  id={`initiative-${monster.id}`}
+                  label="Ролл инициативы"
+                  size="small"
+                  variant="outlined"
+                />
+              </div>
             </div>
-            <Typography sx={{ color: "text.primary", mb: 1.5 }}>
-              Броня: {monster.ac}
-            </Typography>
-            <Typography sx={{ color: "text.primary" }}>
-              Бонус инициативы: {monster.initiative || 0}
-            </Typography>
-            <div className="mt-2">
-              <TextField
-                onChange={onInitiativeChange}
-                value={initiative}
-                type="number"
-                id={`initiative-${monster.id}`}
-                label="Ролл инициативы"
-                size="small"
-                variant="outlined"
-              />
+            <div className="flex space-x-2 mt-2">
+              <div>
+                <Typography sx={{ color: "text.primary", mb: 1.5 }}>
+                  Броня: {monster.ac || 0}
+                </Typography>
+              </div>
+              <div>
+                <Typography sx={{ color: "text.primary" }}>
+                  Бонус инициативы: {monster.initiative || 0}
+                </Typography>
+              </div>
             </div>
           </CardContent>
           <CardActions>{actions}</CardActions>
