@@ -154,6 +154,20 @@ export const MonsterBattlePanel: React.FC<{
                   <FavoriteIcon fontSize="large" />
                 </IconButton>
               </div>
+              <div>
+                <NumberModal
+                  buttonText="Нанасети урон"
+                  onSubmit={damage}
+                  onClose={toggleDamageOpen}
+                  isOpen={isDamageOpen}
+                />
+                <NumberModal
+                  buttonText="Полечить"
+                  onSubmit={heal}
+                  onClose={toggleHealOpen}
+                  isOpen={isHealOpen}
+                />
+              </div>
               <div className="flex space-x-2 mt-2">
                 <div>
                   <Typography sx={{ color: "text.primary", mb: 1.5 }}>
@@ -171,18 +185,6 @@ export const MonsterBattlePanel: React.FC<{
           </Card>
         </Box>
       </div>
-      <NumberModal
-        buttonText="Нанасети урон"
-        onSubmit={damage}
-        onClose={toggleDamageOpen}
-        isOpen={isDamageOpen}
-      />
-      <NumberModal
-        buttonText="Полечить"
-        onSubmit={heal}
-        onClose={toggleHealOpen}
-        isOpen={isHealOpen}
-      />
     </>
   );
 };
