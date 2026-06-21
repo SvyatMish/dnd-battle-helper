@@ -42,7 +42,6 @@ export const NumberForm: React.FC<{
         name="number"
         control={control}
         label={label}
-        autoFocus={true}
       />
       <IconButton color={color} size="small" type="submit">
         {icon}
