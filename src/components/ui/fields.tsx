@@ -12,6 +12,7 @@ interface GenericTextfieldProps<
   disabled?: boolean;
   size?: "small" | "medium";
   type?: "text" | "number";
+  autoFocus?: boolean;
 }
 
 export function Input<T extends FieldValues>({
@@ -21,6 +22,7 @@ export function Input<T extends FieldValues>({
   disabled = false,
   size = "medium",
   type,
+  autoFocus,
 }: GenericTextfieldProps<T>) {
   return (
     <Controller
@@ -34,6 +36,7 @@ export function Input<T extends FieldValues>({
           variant="outlined"
           size={size}
           type={type}
+          autoFocus={autoFocus}
         />
       )}
       name={name}

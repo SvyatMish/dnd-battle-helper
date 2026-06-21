@@ -38,7 +38,7 @@ export const MonstersSearch: React.FC<{
       setInputValue("");
       setValue("");
     },
-    [allMonsters, onPickMonster],
+    [allMonsters, onPickMonster ],
   );
 
   return (

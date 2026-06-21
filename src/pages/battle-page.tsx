@@ -58,7 +58,16 @@ export const BattlePage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setMonstersLs(pickedMonsters);
+    setPickedMonsters((current) => {
+      setMonstersLs(current);
+      return current;
+    });
+    return () => {
+      setPickedMonsters((current) => {
+        setMonstersLs(current);
+        return current;
+      });
+    };
   }, [pickedMonsters]);
 
   return (
