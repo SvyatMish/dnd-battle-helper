@@ -3,11 +3,11 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { TextField } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShieldIcon from "@mui/icons-material/Shield";
-import Button from "@mui/material/Button";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { type BattleMonster, type Monster } from "../types/bestiary.ts";
 import { NumberForm } from "./number-form.tsx";
@@ -72,71 +72,67 @@ export const MonsterBattlePanel: React.FC<{
         <Box className="w-full">
           <Card variant="outlined">
             <CardContent>
-              <div className="flex space-x-2 items-center">
-                <div className="relative h-6 w-6 items-center justify-center flex">
-                  <ShieldIcon fontSize="medium" />
-                  <div className="absolute items-center justify-center flex top-0 left-0 h-6 w-6 text-white text-[12px] font-extrabold">
-                    {monster.ac || 0}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="relative h-6 w-6 items-center justify-center flex">
+                    <ShieldIcon fontSize="medium" />
+                    <div className="absolute items-center justify-center flex top-0 left-0 h-6 w-6 text-white text-[12px] font-extrabold">
+                      {monster.ac || 0}
+                    </div>
                   </div>
+                  <Typography variant="h5" component="div">
+                    {monster.nameStr}
+                  </Typography>
+                  {monster.initiative && (
+                    <div className="ml-2">
+                      <Typography className="text-gray-500" variant="caption">
+                        Бонус инициативы: {monster.initiative}
+                      </Typography>
+                    </div>
+                  )}
                 </div>
-                <Typography variant="h5" component="div">
-                  {monster.nameStr}
-                </Typography>
-                {monster.initiative && (
-                  <div className="ml-2">
-                    <Typography className="text-gray-500" variant="caption">
-                      Бонус инициативы: {monster.initiative}
-                    </Typography>
-                  </div>
-                )}
+                <IconButton onClick={handleRemove} size="small" color="error">
+                  <CloseIcon fontSize="small" />
+                </IconButton>
               </div>
               <div className="flex mt-2 space-x-2 items-center">
-                <div>
-                  <TextField
-                    onChange={onHpChange}
-                    value={hp}
-                    type="number"
-                    id={`hp-${monster.id}`}
-                    label="Здоровье"
-                    size="small"
-                    variant="outlined"
-                  />
-                </div>
-                <div>
-                  <TextField
-                    onChange={onInitiativeChange}
-                    value={initiative}
-                    type="number"
-                    id={`initiative-${monster.id}`}
-                    label="Ролл инициативы"
-                    size="small"
-                    variant="outlined"
-                  />
-                </div>
-                <div className="flex w-full justify-between items-center">
-                  <div className="flex space-x-2 items-center">
-                    <NumberForm
-                      icon={<HeartBrokenIcon fontSize="large" />}
-                      color="error"
-                      onSubmit={damage}
-                      label="Урон"
-                    />
-                    <NumberForm
-                      onSubmit={heal}
-                      color="success"
-                      label="Лечить"
-                      icon={<FavoriteIcon fontSize="large" />}
+                <div className="flex items-center space-x-2 mr-10">
+                  <div>
+                    <TextField
+                      onChange={onInitiativeChange}
+                      value={initiative}
+                      type="number"
+                      id={`initiative-${monster.id}`}
+                      label="Ролл инициативы"
+                      size="small"
+                      variant="outlined"
                     />
                   </div>
                   <div>
-                    <Button
-                      onClick={handleRemove}
-                      variant="contained"
+                    <TextField
+                      onChange={onHpChange}
+                      value={hp}
+                      type="number"
+                      id={`hp-${monster.id}`}
+                      label="Здоровье"
                       size="small"
-                    >
-                      Убрать
-                    </Button>
+                      variant="outlined"
+                    />
                   </div>
+                </div>
+                <div className="flex space-x-2 items-center">
+                  <NumberForm
+                    icon={<HeartBrokenIcon fontSize="large" />}
+                    color="error"
+                    onSubmit={damage}
+                    label="Урон"
+                  />
+                  <NumberForm
+                    onSubmit={heal}
+                    color="success"
+                    label="Лечить"
+                    icon={<FavoriteIcon fontSize="large" />}
+                  />
                 </div>
               </div>
             </CardContent>
