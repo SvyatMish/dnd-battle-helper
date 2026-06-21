@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useToggle } from "@reactuses/core";
+import ShieldIcon from "@mui/icons-material/Shield";
 
 import { type BattleMonster, type Monster } from "../types/bestiary.ts";
 import { NumberModal } from "./number-modal.tsx";
@@ -109,9 +110,17 @@ export const MonsterBattlePanel: React.FC<{
         <Box sx={{ width: 500 }}>
           <Card variant="outlined">
             <CardContent>
-              <Typography variant="h5" component="div">
-                {monster.nameStr}
-              </Typography>
+              <div className="flex space-x-2 items-center">
+                <div className="relative h-6 w-6 items-center justify-center flex">
+                  <ShieldIcon fontSize="medium" />
+                  <div className="absolute items-center justify-center flex top-0 left-0 h-6 w-6 text-white text-[10px]">
+                    {monster.ac || 0}
+                  </div>
+                </div>
+                <Typography variant="h5" component="div">
+                  {monster.nameStr}
+                </Typography>
+              </div>
               <div className="flex mt-2 space-x-2">
                 <div>
                   <TextField
@@ -136,23 +145,26 @@ export const MonsterBattlePanel: React.FC<{
                   />
                 </div>
               </div>
-              <div className="flex space-x-2 mt-2">
-                <IconButton
-                  onClick={toggleDamageOpen}
-                  color="error"
-                  aria-label="damage"
-                  size="small"
-                >
-                  <HeartBrokenIcon fontSize="large" />
-                </IconButton>
-                <IconButton
-                  onClick={toggleHealOpen}
-                  color="success"
-                  aria-label="heal"
-                  size="small"
-                >
-                  <FavoriteIcon fontSize="large" />
-                </IconButton>
+              <div className="flex justify-between items-center">
+                <div className="flex space-x-2 mt-2">
+                  <IconButton
+                    onClick={toggleDamageOpen}
+                    color="error"
+                    aria-label="damage"
+                    size="small"
+                  >
+                    <HeartBrokenIcon fontSize="large" />
+                  </IconButton>
+                  <IconButton
+                    onClick={toggleHealOpen}
+                    color="success"
+                    aria-label="heal"
+                    size="small"
+                  >
+                    <FavoriteIcon fontSize="large" />
+                  </IconButton>
+                </div>
+                <div>{actions}</div>
               </div>
               <div>
                 <NumberModal
@@ -168,20 +180,7 @@ export const MonsterBattlePanel: React.FC<{
                   isOpen={isHealOpen}
                 />
               </div>
-              <div className="flex space-x-2 mt-2">
-                <div>
-                  <Typography sx={{ color: "text.primary", mb: 1.5 }}>
-                    Броня: {monster.ac || 0}
-                  </Typography>
-                </div>
-                <div>
-                  <Typography sx={{ color: "text.primary" }}>
-                    Бонус инициативы: {monster.initiative || 0}
-                  </Typography>
-                </div>
-              </div>
             </CardContent>
-            <CardActions>{actions}</CardActions>
           </Card>
         </Box>
       </div>
