@@ -60,12 +60,7 @@ export const MonsterPanel: React.FC<{
         <Card variant="outlined">
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardContent className="grid grid-cols-1 gap-4">
-              <Input
-                size="small"
-                name="name"
-                control={control}
-                label="Название"
-              />
+              <Input size="small" name="name" control={control} label="Имя" />
               <Input
                 size="small"
                 type="number"

@@ -8,7 +8,7 @@ export const BestiaryPage: React.FC = () => {
   const bestiaryQuery = useGetBestiary();
 
   return (
-    <div className="mt-2 p-5">
+    <div className="mt-2 p-5 space-y-4">
       <AddMonsterForm currentMonsters={bestiaryQuery.data || []} />
       <MonsterList
         monsters={bestiaryQuery.data || []}
