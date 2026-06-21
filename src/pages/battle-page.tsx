@@ -75,7 +75,7 @@ export const BattlePage: React.FC = () => {
 
   return (
     <div className="flex w-full">
-      <div className="flex flex-col justify-between border-r p-2 space-y-2 box-border sticky top-20.5 w-75 h-[calc(100vh-100px)] overflow-auto">
+      <div className="flex flex-col justify-between p-2 space-y-2 box-border sticky top-20.5 w-75 h-[calc(100vh-200px)] overflow-auto">
         <div className="space-y-2">
           <MonstersSearch
             onPickMonster={handlePickMonster}
@@ -98,12 +98,13 @@ export const BattlePage: React.FC = () => {
             onClick={clearMonsters}
             variant="contained"
             size="medium"
+            color="error"
           >
             Очистить
           </Button>
         </div>
       </div>
-      <div className="px-2 flex flex-col space-y-4 w-full">
+      <div className="px-2 flex flex-col space-y-4 w-full h-full border-l">
         {pickedMonsters.map((monster) => (
           <MonsterBattlePanel
             key={monster.id}
