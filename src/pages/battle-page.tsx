@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import { useGetBestiary } from "../queries/bestiary.ts";
 import { MonstersSearch } from "../components/monsters-search.tsx";
 import { type BattleMonster, type Monster } from "../types/bestiary.ts";
-import { MonsterBattlePanel } from "../components/monster-panel.tsx";
+import { MonsterBattlePanel } from "../components/monster-battle-panel.tsx";
 import { rollDice } from "../utils/dice.ts";
 
 const monstersLsKey = "currentMonsterFight";

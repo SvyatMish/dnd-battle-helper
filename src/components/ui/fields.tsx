@@ -65,7 +65,13 @@ export function CheckboxInput<T extends FieldValues>({
       render={({ field }) => (
         <FormControlLabel
           control={
-            <Checkbox {...field} id={name} disabled={disabled} size={size} />
+            <Checkbox
+              checked={field.value}
+              {...field}
+              id={name}
+              disabled={disabled}
+              size={size}
+            />
           }
           label={label}
         />

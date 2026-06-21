@@ -4,12 +4,14 @@ import {
   getDocs,
   addDoc,
   deleteDoc,
+  updateDoc,
   doc,
 } from "firebase/firestore";
 
 import { type Monster } from "../types/bestiary.ts";
 import { firebaseDb } from "../api/firebase.ts";
 import { useAppContext } from "../context.ts";
+import { monsterToDto, monsterToDtoNoId } from "./mappers.ts";
 
 export const MONSTERS_QUERY_KEY = "monsters";
 const monstersCollectionPath = "monsters";
@@ -37,13 +39,10 @@ export const useAddMonster = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (monster: Omit<Monster, "id">) => {
-      await addDoc(collection(firebaseDb, monstersCollectionPath), {
-        name: monster.name.trim() || "",
-        ac: monster.ac || 0,
-        hp: monster.hp || 0,
-        initiative: monster.initiative || 0,
-        isSecret: Boolean(monster.isSecret),
-      });
+      await addDoc(
+        collection(firebaseDb, monstersCollectionPath),
+        monsterToDtoNoId(monster),
+      );
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [MONSTERS_QUERY_KEY] });
@@ -56,6 +55,21 @@ export const useDeleteMonster = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       await deleteDoc(doc(firebaseDb, monstersCollectionPath, id));
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: [MONSTERS_QUERY_KEY] });
+    },
+  });
+};
+
+export const useUpdateMonster = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (monster: Monster) => {
+      await updateDoc(
+        doc(firebaseDb, monstersCollectionPath, monster.id),
+        monsterToDto(monster),
+      );
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [MONSTERS_QUERY_KEY] });
