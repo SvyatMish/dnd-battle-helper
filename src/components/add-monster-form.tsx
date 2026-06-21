@@ -15,9 +15,6 @@ export const AddMonsterForm: React.FC<{ currentMonsters: Monster[] }> = ({
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       name: "",
-      hp: "",
-      ac: "",
-      initiative: "",
     },
   });
 
@@ -44,9 +41,14 @@ export const AddMonsterForm: React.FC<{ currentMonsters: Monster[] }> = ({
       onSubmit={handleSubmit(onsubmit)}
     >
       <Input name="name" control={control} label="Название" />
-      <Input name="hp" control={control} label="Хп" />
-      <Input name="ac" control={control} label="Броня" />
-      <Input name="initiative" control={control} label="Инициатива" />
+      <Input type="number" name="hp" control={control} label="Хп" />
+      <Input type="number" name="ac" control={control} label="Броня" />
+      <Input
+        type="number"
+        name="initiative"
+        control={control}
+        label="Бонус инициативы"
+      />
       <Button
         loading={addMonsterMutation.isPending}
         variant="contained"

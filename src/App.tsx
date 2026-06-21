@@ -1,15 +1,15 @@
 import {
   Routes,
   Route,
-  Link,
   useLocation,
   useNavigate,
+  Link,
 } from "react-router-dom";
 import { useEffect } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Button } from "@mui/material";
+import { Typography } from "@mui/material";
 
 import { BattlePage } from "./pages/battle-page.tsx";
 import { BestiaryPage } from "./pages/bestiary-page.tsx";
@@ -45,14 +45,18 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <nav>
-          <Link to="/">
-            <Button>Бой</Button>
-          </Link>
-          <Link to="/bestiary">
-            <Button>Бестриарий</Button>
-          </Link>
-        </nav>
+        <div className="p-5">
+          <nav className="flex justify-end">
+            <div className="grid grid-cols-2 max-w-70 gap-4 justify-items-center">
+              <Link to="/">
+                <Typography variant="h5">Бой</Typography>
+              </Link>
+              <Link to="/bestiary">
+                <Typography variant="h5">Бестриарий</Typography>
+              </Link>
+            </div>
+          </nav>
+        </div>
         <Routes>
           <Route path="/" element={<BattlePage />} />
           <Route path="/bestiary" element={<BestiaryPage />} />

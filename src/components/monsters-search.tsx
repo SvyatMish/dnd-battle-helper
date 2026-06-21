@@ -3,9 +3,12 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import type { Monster } from "../types/bestiary.ts";
 
-export const MonstersSearch: React.FC<{ allMonsters: Monster[] }> = ({
-  allMonsters,
-}) => {
+export const MonstersSearch: React.FC<{
+  allMonsters: Monster[];
+  onPickMonster(v: Monster): void;
+}> = ({ allMonsters, onPickMonster }) => {
+  const [value, setValue] = React.useState("");
+
   const [inputValue, setInputValue] = React.useState("");
 
   const handleChange = useCallback((_: any, newValue: string) => {
@@ -30,25 +33,24 @@ export const MonstersSearch: React.FC<{ allMonsters: Monster[] }> = ({
     (_: any, newValue: string | null) => {
       const monster = allMonsters.find((item) => item.name === newValue);
       if (monster) {
-        alert(JSON.stringify(monster));
+        onPickMonster(monster);
       }
       setInputValue("");
+      setValue("");
     },
-    [allMonsters],
+    [allMonsters, onPickMonster],
   );
 
   return (
-    <div>
-      <br />
-      <Autocomplete
-        onChange={handlePick}
-        inputValue={inputValue}
-        onInputChange={handleChange}
-        id="monsters-search"
-        options={monsterOptions}
-        sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Controllable" />}
-      />
-    </div>
+    <Autocomplete
+      value={value}
+      onChange={handlePick}
+      inputValue={inputValue}
+      onInputChange={handleChange}
+      id="monsters-search"
+      options={monsterOptions}
+      sx={{ width: 300 }}
+      renderInput={(params) => <TextField {...params} label="Поиск" />}
+    />
   );
 };
