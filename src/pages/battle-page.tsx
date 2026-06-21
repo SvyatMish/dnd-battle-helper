@@ -69,18 +69,41 @@ export const BattlePage: React.FC = () => {
     };
   }, [pickedMonsters]);
 
+  const clearMonsters = useCallback(() => {
+    setPickedMonsters([]);
+  }, []);
+
   return (
-    <div className="p-4 grid grid-cols-[300px_1fr_200px] box-border">
-      <div className="flex flex-col border-r min-h-[calc(100vh-120px)] px-2 space-y-2 box-border">
-        <MonstersSearch
-          onPickMonster={handlePickMonster}
-          allMonsters={monstersQuery.data || []}
-        />
-        <Button onClick={sortMonsters} variant="contained" size="medium">
-          Отсортировать
-        </Button>
+    <div className="flex w-full">
+      <div className="flex flex-col justify-between border-r p-2 space-y-2 box-border sticky top-20.5 w-75 h-[calc(100vh-100px)] overflow-auto">
+        <div className="space-y-2">
+          <MonstersSearch
+            onPickMonster={handlePickMonster}
+            allMonsters={monstersQuery.data || []}
+          />
+          <div className="w-full">
+            <Button
+              fullWidth
+              onClick={sortMonsters}
+              variant="contained"
+              size="medium"
+            >
+              Отсортировать
+            </Button>
+          </div>
+        </div>
+        <div className="w-full">
+          <Button
+            fullWidth
+            onClick={clearMonsters}
+            variant="contained"
+            size="medium"
+          >
+            Очистить
+          </Button>
+        </div>
       </div>
-      <div className="px-2 flex flex-col space-y-4">
+      <div className="px-2 flex flex-col space-y-4 w-full">
         {pickedMonsters.map((monster) => (
           <MonsterBattlePanel
             key={monster.id}
@@ -88,17 +111,6 @@ export const BattlePage: React.FC = () => {
             removeMonster={removeMonster}
           />
         ))}
-      </div>
-      <div>
-        <Button
-          onClick={() => {
-            setPickedMonsters([]);
-          }}
-          variant="contained"
-          size="medium"
-        >
-          Очистить
-        </Button>
       </div>
     </div>
   );

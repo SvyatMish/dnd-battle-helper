@@ -59,7 +59,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AppContext.Provider value={{ ...context, setShowHidden }}>
-          <div className="p-5">
+          <div className="p-5 box-border">
             <nav className="flex justify-end">
               <div className="grid grid-cols-3 max-w-fit gap-4 justify-items-center">
                 <FormControlLabel
