@@ -33,9 +33,9 @@ export const useAddMonster = () => {
     mutationFn: async (monster: Omit<Monster, "id">) => {
       await addDoc(collection(firebaseDb, monstersCollectionPath), {
         name: monster.name.trim() || "",
-        ac: monster.ac?.trim() || "",
-        hp: monster.hp?.trim() || "",
-        initiative: monster.initiative?.trim() || "",
+        ac: monster.ac || 0,
+        hp: monster.hp || 0,
+        initiative: monster.initiative || 0,
       });
     },
     onSuccess: async () => {
