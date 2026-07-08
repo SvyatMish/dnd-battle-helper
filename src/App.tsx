@@ -1,17 +1,9 @@
-import {
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-  Link,
-} from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { AppContext, type AppContextType } from "./context.ts";
-
 import { BattlePage } from "./pages/battle-page.tsx";
 import { BestiaryPage } from "./pages/bestiary-page.tsx";
 
@@ -59,30 +51,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AppContext.Provider value={{ ...context, setShowHidden }}>
-          <div className="p-5 box-border">
-            <nav className="flex justify-end">
-              <div className="grid grid-cols-3 max-w-fit gap-4 justify-items-center">
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      id="show-n-checkbox"
-                      checked={context.showHidden}
-                      onChange={(e) => {
-                        setShowHidden(e.target.checked);
-                      }}
-                    />
-                  }
-                  label="Секретные монстры"
-                />
-                <Link to="/">
-                  <Typography variant="h5">Бой</Typography>
-                </Link>
-                <Link to="/bestiary">
-                  <Typography variant="h5">Бестриарий</Typography>
-                </Link>
-              </div>
-            </nav>
-          </div>
           <Routes>
             <Route path="/" element={<BattlePage />} />
             <Route path="/bestiary" element={<BestiaryPage />} />
