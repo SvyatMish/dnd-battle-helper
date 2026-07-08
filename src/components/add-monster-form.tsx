@@ -36,7 +36,7 @@ export const AddMonsterForm: React.FC<{ currentMonsters: Monster[] }> = ({
 
   return (
     <form
-      className="grid grid-cols-2 gap-2 max-w-300 mx-auto"
+      className="mx-auto grid max-w-300 grid-cols-2 gap-2"
       onSubmit={handleSubmit(onSubmit)}
     >
       <Input name="name" control={control} label="Имя" />
