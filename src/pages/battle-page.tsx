@@ -6,6 +6,7 @@ import { MonstersSearch } from "../components/monsters-search.tsx";
 import { type BattleMonster, type Monster } from "../types/bestiary.ts";
 import { MonsterBattlePanel } from "../components/monster-battle-panel.tsx";
 import { rollDice } from "../utils/dice.ts";
+import { SidebarLayout } from "../components/sidebar-layout.tsx";
 
 const monstersLsKey = "currentMonsterFight";
 
@@ -74,37 +75,40 @@ export const BattlePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex w-full">
-      <div className="flex flex-col justify-between p-2 space-y-2 box-border sticky top-20.5 w-75 h-[calc(100vh-200px)] overflow-auto">
-        <div className="space-y-2">
-          <MonstersSearch
-            onPickMonster={handlePickMonster}
-            allMonsters={monstersQuery.data || []}
-          />
+    <SidebarLayout
+      sidebarSlot={
+        <>
+          <div className="space-y-2">
+            <MonstersSearch
+              onPickMonster={handlePickMonster}
+              allMonsters={monstersQuery.data || []}
+            />
+            <div className="w-full">
+              <Button
+                fullWidth
+                onClick={sortMonsters}
+                variant="contained"
+                size="medium"
+              >
+                Отсортировать
+              </Button>
+            </div>
+          </div>
           <div className="w-full">
             <Button
               fullWidth
-              onClick={sortMonsters}
+              onClick={clearMonsters}
               variant="contained"
               size="medium"
+              color="error"
             >
-              Отсортировать
+              Очистить
             </Button>
           </div>
-        </div>
-        <div className="w-full">
-          <Button
-            fullWidth
-            onClick={clearMonsters}
-            variant="contained"
-            size="medium"
-            color="error"
-          >
-            Очистить
-          </Button>
-        </div>
-      </div>
-      <div className="px-2 flex flex-col space-y-4 w-full h-full border-l">
+        </>
+      }
+    >
+      <div className="flex flex-col space-y-4">
         {pickedMonsters.map((monster) => (
           <MonsterBattlePanel
             key={monster.id}
@@ -113,6 +117,6 @@ export const BattlePage: React.FC = () => {
           />
         ))}
       </div>
-    </div>
+    </SidebarLayout>
   );
 };
