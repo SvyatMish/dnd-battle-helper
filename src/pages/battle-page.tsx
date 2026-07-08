@@ -76,36 +76,36 @@ export const BattlePage: React.FC = () => {
 
   return (
     <SidebarLayout
-      sidebarSlot={
-        <>
-          <div className="space-y-2">
-            <MonstersSearch
-              onPickMonster={handlePickMonster}
-              allMonsters={monstersQuery.data || []}
-            />
-            <div className="w-full">
-              <Button
-                fullWidth
-                onClick={sortMonsters}
-                variant="contained"
-                size="medium"
-              >
-                Отсортировать
-              </Button>
-            </div>
-          </div>
+      bottomSlot={
+        <div className="w-full">
+          <Button
+            fullWidth
+            onClick={clearMonsters}
+            variant="contained"
+            size="medium"
+            color="error"
+          >
+            Очистить
+          </Button>
+        </div>
+      }
+      searchSlot={
+        <div className="space-y-2">
+          <MonstersSearch
+            onPickMonster={handlePickMonster}
+            allMonsters={monstersQuery.data || []}
+          />
           <div className="w-full">
             <Button
               fullWidth
-              onClick={clearMonsters}
+              onClick={sortMonsters}
               variant="contained"
               size="medium"
-              color="error"
             >
-              Очистить
+              Отсортировать
             </Button>
           </div>
-        </>
+        </div>
       }
     >
       <div className="flex flex-col space-y-4">

@@ -4,12 +4,13 @@ import { Sidebar } from "./sidebar";
 
 export const SidebarLayout: React.FC<{
   children: React.ReactNode;
-  sidebarSlot: React.ReactNode;
-}> = ({ children, sidebarSlot }) => {
+  searchSlot: React.ReactNode;
+  bottomSlot?: React.ReactNode;
+}> = ({ children, searchSlot, bottomSlot }) => {
   return (
     <div className="flex w-full">
-      <Sidebar>{sidebarSlot}</Sidebar>
-      <div className="h-full w-full border-l px-2">{children}</div>
+      <Sidebar searchSlot={searchSlot} bottomSlot={bottomSlot} />
+      <div className="h-full w-full border-l px-2 py-4">{children}</div>
     </div>
   );
 };

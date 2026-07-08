@@ -6,20 +6,28 @@ import { useAppContext } from "../context.ts";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   [
-    "block w-full rounded px-2 py-1.5 text-sm font-medium no-underline transition-colors",
-    isActive
-      ? "bg-[#3b3534]/15 text-[#3b3534]"
-      : "text-[#3b3534]/80 hover:bg-[#3b3534]/10",
+    "text-2xl font-bold no-underline transition-colors",
+    isActive ? "text-[#1976d2]" : "text-[#757575]",
   ].join(" ");
 
-export const Sidebar: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const Sidebar: React.FC<{
+  searchSlot: React.ReactNode;
+  bottomSlot?: React.ReactNode;
+}> = ({ searchSlot, bottomSlot }) => {
   const { showHidden, setShowHidden } = useAppContext();
 
   return (
-    <div className="sticky top-0 box-border flex h-[100vh] w-75 flex-col justify-between space-y-2 overflow-auto p-2">
-      <div className="space-y-2">
+    <div className="sticky top-0 box-border flex h-screen w-75 flex-col justify-between space-y-2 overflow-auto px-2 py-4">
+      <div className="space-y-4">
+        <nav className="flex justify-between">
+          <NavLink to="/" end className={navLinkClass}>
+            Бой
+          </NavLink>
+          <NavLink to="/bestiary" className={navLinkClass}>
+            Бестриарий
+          </NavLink>
+        </nav>
+        {searchSlot}
         <FormControlLabel
           control={
             <Checkbox
@@ -30,16 +38,8 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({
           }
           label="Секретные монстры"
         />
-        <nav className="flex flex-col gap-1 border-t border-[#3b3534]/15 pt-2">
-          <NavLink to="/" end className={navLinkClass}>
-            Бой
-          </NavLink>
-          <NavLink to="/bestiary" className={navLinkClass}>
-            Бестриарий
-          </NavLink>
-        </nav>
       </div>
-      {children}
+      {bottomSlot}
     </div>
   );
 };
