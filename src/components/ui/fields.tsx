@@ -45,6 +45,53 @@ export function Input<T extends FieldValues>({
   );
 }
 
+interface GenericTextareaProps<
+  T extends FieldValues,
+> extends UseControllerProps<T> {
+  label?: string;
+  disabled?: boolean;
+  size?: "small" | "medium";
+  autoFocus?: boolean;
+  minRows?: number;
+  maxRows?: number;
+  placeholder?: string;
+}
+
+export function TextareaInput<T extends FieldValues>({
+  name,
+  control,
+  label,
+  disabled = false,
+  size = "medium",
+  autoFocus,
+  minRows = 3,
+  maxRows,
+  placeholder,
+}: GenericTextareaProps<T>) {
+  return (
+    <Controller
+      render={({ field }) => (
+        <TextField
+          {...field}
+          id={name}
+          label={label}
+          placeholder={placeholder}
+          fullWidth
+          disabled={disabled}
+          variant="outlined"
+          size={size}
+          autoFocus={autoFocus}
+          multiline
+          minRows={minRows}
+          maxRows={maxRows}
+        />
+      )}
+      name={name}
+      control={control}
+    />
+  );
+}
+
 interface GenericCheckboxProps<
   T extends FieldValues,
 > extends UseControllerProps<T> {

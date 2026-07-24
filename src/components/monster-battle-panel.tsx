@@ -135,6 +135,19 @@ export const MonsterBattlePanel: React.FC<{
                   />
                 </div>
               </div>
+              {monster.actions ? (
+                <details className="mt-2">
+                  <summary className="cursor-pointer select-none text-xs text-gray-500">
+                    Действия
+                  </summary>
+                  <Typography
+                    variant="body2"
+                    className="mt-1 max-h-20 overflow-y-auto whitespace-pre-wrap text-gray-700"
+                  >
+                    {monster.actions}
+                  </Typography>
+                </details>
+              ) : null}
             </CardContent>
           </Card>
         </Box>

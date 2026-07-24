@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@mui/material";
 
 import { type Monster } from "../types/bestiary.ts";
-import { Input, CheckboxInput } from "./ui/fields.tsx";
+import { Input, CheckboxInput, TextareaInput } from "./ui/fields.tsx";
 import { useAddMonster } from "../queries/bestiary.ts";
 
 type FormValues = Omit<Monster, "id">;
@@ -15,6 +15,7 @@ export const AddMonsterForm: React.FC<{ currentMonsters: Monster[] }> = ({
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       name: "",
+      actions: "",
     },
   });
 
@@ -49,6 +50,7 @@ export const AddMonsterForm: React.FC<{ currentMonsters: Monster[] }> = ({
         label="Бонус инициативы"
       />
       <CheckboxInput label="Секретный" control={control} name="isSecret" />
+      <TextareaInput name="actions" control={control} label="Действия" />
       <Button
         loading={addMonsterMutation.isPending}
         variant="contained"

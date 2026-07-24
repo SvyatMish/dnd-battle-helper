@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
 
 import { type Monster } from "../types/bestiary.ts";
-import { Input, CheckboxInput } from "./ui/fields.tsx";
+import { Input, CheckboxInput, TextareaInput } from "./ui/fields.tsx";
 import { useDeleteMonster, useUpdateMonster } from "../queries/bestiary.ts";
 
 type FormValues = Monster;
@@ -81,6 +81,12 @@ export const MonsterPanel: React.FC<{
                 name="initiative"
                 control={control}
                 label="Бонус инициативы"
+              />
+              <TextareaInput
+                size="small"
+                name="actions"
+                control={control}
+                label="Действия"
               />
               <CheckboxInput
                 label="Секретный"

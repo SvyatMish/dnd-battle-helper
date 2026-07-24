@@ -9,6 +9,7 @@ export const monsterToDtoNoId = (
     hp: monster.hp || 0,
     initiative: monster.initiative || 0,
     isSecret: Boolean(monster.isSecret),
+    actions: monster.actions?.trim() || "",
   };
 };
 

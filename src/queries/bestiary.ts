@@ -30,7 +30,7 @@ export const useGetBestiary = () => {
       if (!appContext.showHidden) {
         monsters = monsters.filter((item) => !item.isSecret);
       }
-      return monsters;
+      return monsters.sort((a, b) => a.name.localeCompare(b.name));
     },
   });
 };
