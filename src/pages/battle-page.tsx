@@ -5,6 +5,7 @@ import { useGetBestiary } from "../queries/bestiary.ts";
 import { MonstersSearch } from "../components/monsters-search.tsx";
 import { type BattleMonster, type Monster } from "../types/bestiary.ts";
 import { MonsterBattlePanel } from "../components/monster-battle-panel.tsx";
+import { DiceRollerForm } from "../components/dice-roller-form.tsx";
 import { rollDice } from "../utils/dice.ts";
 import { SidebarLayout } from "../components/sidebar-layout.tsx";
 
@@ -104,6 +105,9 @@ export const BattlePage: React.FC = () => {
             >
               Отсортировать
             </Button>
+          </div>
+          <div className="mt-3">
+            <DiceRollerForm />
           </div>
         </div>
       }

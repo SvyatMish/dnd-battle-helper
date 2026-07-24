@@ -83,13 +83,12 @@ export const MonsterBattlePanel: React.FC<{
                   <Typography variant="h5" component="div">
                     {monster.nameStr}
                   </Typography>
-                  {monster.initiative && (
-                    <div className="ml-2">
-                      <Typography className="text-gray-500" variant="caption">
-                        Бонус инициативы: {monster.initiative}
-                      </Typography>
-                    </div>
-                  )}
+
+                  <div className="ml-2">
+                    <Typography className="text-gray-500" variant="caption">
+                      Бонус инициативы: {monster.initiative || 0}
+                    </Typography>
+                  </div>
                 </div>
                 <IconButton onClick={handleRemove} size="small" color="error">
                   <CloseIcon fontSize="small" />
