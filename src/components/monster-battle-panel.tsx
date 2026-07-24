@@ -74,9 +74,9 @@ export const MonsterBattlePanel: React.FC<{
             <CardContent>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="relative h-6 w-6 items-center justify-center flex">
+                  <div className="relative flex h-6 w-6 items-center justify-center">
                     <ShieldIcon fontSize="medium" />
-                    <div className="absolute items-center justify-center flex top-0 left-0 h-6 w-6 text-white text-[12px] font-extrabold">
+                    <div className="absolute top-0 left-0 flex h-6 w-6 items-center justify-center text-[12px] font-extrabold text-white">
                       {monster.ac || 0}
                     </div>
                   </div>
@@ -95,8 +95,8 @@ export const MonsterBattlePanel: React.FC<{
                   <CloseIcon fontSize="small" />
                 </IconButton>
               </div>
-              <div className="flex mt-2 space-x-2 items-center">
-                <div className="flex items-center space-x-2 mr-10">
+              <div className="mt-2 flex items-center space-x-2">
+                <div className="mr-10 flex items-center space-x-2">
                   <div>
                     <TextField
                       onChange={onInitiativeChange}
@@ -120,7 +120,7 @@ export const MonsterBattlePanel: React.FC<{
                     />
                   </div>
                 </div>
-                <div className="flex space-x-2 items-center">
+                <div className="flex items-center space-x-2">
                   <NumberForm
                     icon={<HeartBrokenIcon fontSize="large" />}
                     color="error"
@@ -135,9 +135,9 @@ export const MonsterBattlePanel: React.FC<{
                   />
                 </div>
               </div>
-              {monster.actions ? (
+              {monster.actions && (
                 <details className="mt-2">
-                  <summary className="cursor-pointer select-none text-xs text-gray-500">
+                  <summary className="cursor-pointer text-xs text-gray-500 select-none">
                     Действия
                   </summary>
                   <Typography
@@ -147,7 +147,7 @@ export const MonsterBattlePanel: React.FC<{
                     {monster.actions}
                   </Typography>
                 </details>
-              ) : null}
+              )}
             </CardContent>
           </Card>
         </Box>
