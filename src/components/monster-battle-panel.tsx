@@ -142,7 +142,7 @@ export const MonsterBattlePanel: React.FC<{
                   </summary>
                   <Typography
                     variant="body2"
-                    className="mt-1 max-h-20 overflow-y-auto whitespace-pre-wrap text-gray-700"
+                    className="mt-1 whitespace-pre-wrap text-gray-700"
                   >
                     {monster.actions}
                   </Typography>
