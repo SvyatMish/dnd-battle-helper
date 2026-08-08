@@ -22,7 +22,9 @@ export const MonsterBattlePanel: React.FC<{
 }> = ({ monster, removeMonster }) => {
   const [initiative, setInitiative] = useState(monster.initiativeRoll);
   const [hp, setHp] = useState(monster.hp);
-  const [actionRolls, setActionRolls] = useState<Record<string, number>>({});
+  const [actionRolls, setActionRolls] = useState<
+    Record<string, { result: number; isMax: boolean }>
+  >({});
 
   const parsedActions = useMemo(() => {
     const actions = monster.actions;
@@ -52,16 +54,23 @@ export const MonsterBattlePanel: React.FC<{
               isDiceExpression ? "Бросить кости" : `Бросить 1d20${expression}`
             }
             onClick={() => {
+              const max = count * sides + modifier;
               const result = rollDice({ count, sides, modifier });
-              setActionRolls((current) => ({ ...current, [key]: result }));
+              const isMax = result === max;
+              setActionRolls((current) => ({
+                ...current,
+                [key]: { result, isMax },
+              }));
             }}
           >
             {expression}
           </button>
           {actionRolls[key] !== undefined && (
-            <span className="font-semibold text-green-700">
+            <span
+              className={`font-semibold ${actionRolls[key].isMax ? "text-green-700" : ""}`}
+            >
               {" "}
-              → {actionRolls[key]}
+              → {actionRolls[key].result}
             </span>
           )}
         </React.Fragment>,
