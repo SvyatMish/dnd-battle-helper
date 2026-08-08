@@ -1,56 +1,70 @@
 import React, { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Button, Typography } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 
-import { Input } from "./ui/fields.tsx";
 import { rollDice } from "../utils/dice.ts";
 
-type FormValues = {
-  count: number;
-  sides: number;
-};
+const dice = [4, 6, 8, 10, 12, 20] as const;
 
 export const DiceRollerForm: React.FC = () => {
-  const [result, setResult] = useState<number | null>(null);
-  const { handleSubmit, control } = useForm<FormValues>({
-    defaultValues: {
-      count: 1,
-      sides: 20,
-    },
-  });
+  const [results, setResults] = useState<string[]>([]);
+  const [total, setTotal] = useState<number>(0);
 
-  const onSubmit = useCallback((values: FormValues) => {
-    const count = Number(values.count) || 1;
-    const sides = Number(values.sides) || 20;
-    setResult(rollDice({ count, sides }));
+  const handleRoll = useCallback((sides: (typeof dice)[number]) => {
+    const result = rollDice({ sides });
+    setResults((current) => [`d${sides} - ${result}`, ...current]);
+    setTotal((current) => current + result);
+  }, []);
+
+  const handleClear = useCallback(() => {
+    setResults([]);
+    setTotal(0);
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-      <div className="grid grid-cols-2 gap-2">
-        <Input
-          size="small"
-          type="number"
-          name="count"
-          control={control}
-          label="Кол-во"
-        />
-        <Input
-          size="small"
-          type="number"
-          name="sides"
-          control={control}
-          label="Грани"
-        />
+    <div className="space-y-2">
+      <div className="grid grid-cols-6 gap-2">
+        {dice.map((sides) => (
+          <Button
+            key={sides}
+            type="button"
+            size="small"
+            variant="outlined"
+            aria-label={`Бросить d${sides}`}
+            onClick={() => handleRoll(sides)}
+            sx={{ minWidth: 0, height: 40 }}
+          >
+            d{sides}
+          </Button>
+        ))}
       </div>
-      <Button fullWidth size="small" variant="outlined" type="submit">
-        Бросить
-      </Button>
-      {result !== null && (
-        <Typography variant="body2" align="center">
-          Результат: {result}
-        </Typography>
+      {results.length > 0 && (
+        <div className="max-h-24 overflow-y-auto rounded border border-gray-300 px-2 py-1 text-sm">
+          {results.map((result, index) => (
+            <div key={`${result}-${index}`}>{result}</div>
+          ))}
+        </div>
       )}
-    </form>
+      {Boolean(total) && results.length > 1 && (
+        <div className="flex justify-between">
+          <div>
+            <span className="text-sm">
+              Сумма ({results.length}): {total}
+            </span>
+          </div>
+          <div>
+            <IconButton
+              aria-label="Очистить поиск"
+              edge="end"
+              size="small"
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={handleClear}
+            >
+              <ClearIcon fontSize="small" />
+            </IconButton>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
