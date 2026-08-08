@@ -1,55 +1,109 @@
-import React, { useCallback, useMemo } from "react";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type KeyboardEvent,
+} from "react";
+import {
+  List,
+  ListItemButton,
+  ListItemText,
+  Paper,
+  TextField,
+} from "@mui/material";
 import type { Monster } from "../types/bestiary.ts";
 
 export const MonstersSearch: React.FC<{
   allMonsters: Monster[];
   onPickMonster(v: Monster): void;
 }> = ({ allMonsters, onPickMonster }) => {
-  const [value, setValue] = React.useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
-  const [inputValue, setInputValue] = React.useState("");
-
-  const handleChange = useCallback((_: any, newValue: string) => {
-    setInputValue(newValue);
-  }, []);
-
-  const monsterNames = useMemo(() => {
-    return allMonsters.map((monster: Monster) => monster.name);
-  }, [allMonsters]);
-
-  const monsterOptions = useMemo(() => {
+  const filteredMonsters = useMemo(() => {
     const trimmedValue = inputValue.trim().toLowerCase();
     if (!trimmedValue) {
-      return monsterNames;
+      return [];
     }
-    return monsterNames.filter((item) =>
-      item.toLowerCase().includes(trimmedValue),
+    return allMonsters.filter((monster) =>
+      monster.name.toLowerCase().includes(trimmedValue),
     );
-  }, [monsterNames, inputValue]);
+  }, [allMonsters, inputValue]);
+
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [inputValue]);
 
   const handlePick = useCallback(
-    (_: any, newValue: string | null) => {
-      const monster = allMonsters.find((item) => item.name === newValue);
-      if (monster) {
-        onPickMonster(monster);
-      }
-      setInputValue("");
-      setValue("");
+    (monster: Monster) => {
+      onPickMonster(monster);
     },
-    [allMonsters, onPickMonster ],
+    [onPickMonster],
   );
 
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      if (!isOpen || filteredMonsters.length === 0) return;
+
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        setActiveIndex((current) => (current + 1) % filteredMonsters.length);
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        setActiveIndex((current) =>
+          current <= 0 ? filteredMonsters.length - 1 : current - 1,
+        );
+      } else if (event.key === "Enter" && activeIndex >= 0) {
+        event.preventDefault();
+        handlePick(filteredMonsters[activeIndex]);
+      } else if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    },
+    [activeIndex, filteredMonsters, handlePick, isOpen],
+  );
+
+  const showResults = isOpen && Boolean(inputValue.trim());
+
   return (
-    <Autocomplete
-      value={value}
-      onChange={handlePick}
-      inputValue={inputValue}
-      onInputChange={handleChange}
-      id="monsters-search"
-      options={monsterOptions}
-      renderInput={(params) => <TextField {...params} label="Поиск" />}
-    />
+    <div className="relative">
+      <TextField
+        id="monsters-search"
+        label="Поиск"
+        fullWidth
+        value={inputValue}
+        onChange={(event) => {
+          setInputValue(event.target.value);
+          setIsOpen(true);
+        }}
+        onFocus={() => setIsOpen(true)}
+        onBlur={() => setIsOpen(false)}
+        onKeyDown={handleKeyDown}
+        autoComplete="off"
+      />
+      {showResults && (
+        <Paper
+          elevation={8}
+          className="absolute z-20 mt-1 max-h-64 w-full overflow-y-auto"
+        >
+          {filteredMonsters.length > 0 && (
+            <List dense disablePadding>
+              {filteredMonsters.map((monster, index) => (
+                <ListItemButton
+                  key={monster.id}
+                  selected={index === activeIndex}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => handlePick(monster)}
+                >
+                  <ListItemText primary={monster.name} />
+                </ListItemButton>
+              ))}
+            </List>
+          )}
+        </Paper>
+      )}
+    </div>
   );
 };
