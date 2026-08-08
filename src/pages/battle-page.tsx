@@ -25,8 +25,9 @@ export const BattlePage: React.FC = () => {
   const monstersQuery = useGetBestiary();
   const [pickedMonsters, setPickedMonsters] =
     useState<BattleMonster[]>(getMonstersLs());
+  const [latestMonsters, setLatestMonsters] = useState<BattleMonster[]>([]);
 
-  const handlePickMonster = useCallback((monster: Monster) => {
+  const handleAddMonster = useCallback((monster: Monster) => {
     setPickedMonsters((current) => {
       const similarMonsters = current.filter(
         (item) => item.name === monster.name,
@@ -41,6 +42,18 @@ export const BattlePage: React.FC = () => {
       };
       return [newMonster, ...current];
     });
+  }, []);
+
+  const handlePickMonster = useCallback((monster: BattleMonster) => {
+    setLatestMonsters((current) => {
+      const newMonsters = [...current];
+      newMonsters.unshift(monster);
+      if (newMonsters.length > 3) {
+        newMonsters.pop();
+      }
+      return newMonsters;
+    });
+    handleAddMonster(monster);
   }, []);
 
   const removeMonster = useCallback((monster: Monster) => {
@@ -96,6 +109,21 @@ export const BattlePage: React.FC = () => {
             onPickMonster={handlePickMonster}
             allMonsters={monstersQuery.data || []}
           />
+          {latestMonsters.length > 0 && (
+            <div className="space-y-1">
+              {latestMonsters.map((monster) => (
+                <Button
+                  key={monster.id}
+                  fullWidth
+                  size="small"
+                  variant="text"
+                  onClick={() => handleAddMonster(monster)}
+                >
+                  {monster.name}
+                </Button>
+              ))}
+            </div>
+          )}
           <div className="w-full">
             <Button
               fullWidth
