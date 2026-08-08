@@ -6,12 +6,15 @@ import React, {
   type KeyboardEvent,
 } from "react";
 import {
+  IconButton,
+  InputAdornment,
   List,
   ListItemButton,
   ListItemText,
   Paper,
   TextField,
 } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 import type { Monster } from "../types/bestiary.ts";
 
 export const MonstersSearch: React.FC<{
@@ -82,6 +85,26 @@ export const MonstersSearch: React.FC<{
         onBlur={() => setIsOpen(false)}
         onKeyDown={handleKeyDown}
         autoComplete="off"
+        slotProps={{
+          input: {
+            endAdornment: inputValue ? (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="Очистить поиск"
+                  edge="end"
+                  size="small"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => {
+                    setInputValue("");
+                    setIsOpen(false);
+                  }}
+                >
+                  <ClearIcon fontSize="small" />
+                </IconButton>
+              </InputAdornment>
+            ) : null,
+          },
+        }}
       />
       {showResults && (
         <Paper
