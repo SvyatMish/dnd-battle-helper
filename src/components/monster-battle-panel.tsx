@@ -1,9 +1,4 @@
-import React, {
-  useCallback,
-  useMemo,
-  type ChangeEvent,
-  useState,
-} from "react";
+import React, { useCallback, useMemo, type ChangeEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -19,7 +14,7 @@ import { NumberForm } from "./number-form.tsx";
 import { rollDice } from "../utils/dice.ts";
 
 const rollExpressionPattern =
-  /(\d+)\s*[dдкk]\s*(\d+)(?:\s*([+-])\s*(\d+))?|([+-])\s*(\d+)/gi;
+  /(\d+)\s*[dдкk]\s*(\d+)(?:\s*([+-])\s*(\d+))?|(?<=\s)\+\s*(\d+)/gi;
 
 export const MonsterBattlePanel: React.FC<{
   monster: BattleMonster;
@@ -43,12 +38,9 @@ export const MonsterBattlePanel: React.FC<{
       const isDiceExpression = match[1] !== undefined;
       const count = isDiceExpression ? Number(match[1]) : 1;
       const sides = isDiceExpression ? Number(match[2]) : 20;
-      const modifierSign = isDiceExpression ? match[3] : match[5];
-      const modifierValue = Number(
-        isDiceExpression ? match[4] || 0 : match[6],
-      );
-      const modifier =
-        modifierSign === "-" ? -modifierValue : modifierValue;
+      const modifierSign = isDiceExpression ? match[3] : "+";
+      const modifierValue = Number(isDiceExpression ? match[4] || 0 : match[5]);
+      const modifier = modifierSign === "-" ? -modifierValue : modifierValue;
 
       parts.push(actions.slice(lastIndex, index));
       parts.push(
@@ -57,9 +49,7 @@ export const MonsterBattlePanel: React.FC<{
             type="button"
             className="cursor-pointer font-semibold text-blue-600 underline"
             title={
-              isDiceExpression
-                ? "Бросить кости"
-                : `Бросить 1d20${expression}`
+              isDiceExpression ? "Бросить кости" : `Бросить 1d20${expression}`
             }
             onClick={() => {
               const result = rollDice({ count, sides, modifier });
