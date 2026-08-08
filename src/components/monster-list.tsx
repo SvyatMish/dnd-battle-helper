@@ -15,7 +15,7 @@ export const MonsterList: React.FC<{
     return monsters.filter((monster) => {
       return monster.name.toLowerCase().includes(search.toLowerCase());
     });
-  }, [search]);
+  }, [search, monsters]);
 
   if (isLoading) {
     return "Loading...";

@@ -16,6 +16,10 @@ import { monsterToDto, monsterToDtoNoId } from "./mappers.ts";
 export const MONSTERS_QUERY_KEY = "monsters";
 const monstersCollectionPath = "monsters";
 
+const getTimestampFormDoc = (doc: any): number => {
+  return doc._document?.createTime?.timestamp?.seconds ?? 0;
+};
+
 export const useGetBestiary = () => {
   const appContext = useAppContext();
   return useQuery({
@@ -24,13 +28,13 @@ export const useGetBestiary = () => {
       const snapshot = await getDocs(
         collection(firebaseDb, monstersCollectionPath),
       );
-      let monsters = snapshot.docs.map(
-        (doc) => ({ id: doc.id, ...doc.data() }) as Monster,
-      );
+      let monsters = snapshot.docs
+        .sort((a, b) => getTimestampFormDoc(b) - getTimestampFormDoc(a))
+        .map((doc) => ({ id: doc.id, ...doc.data() }) as Monster);
       if (!appContext.showHidden) {
         monsters = monsters.filter((item) => !item.isSecret);
       }
-      return monsters.sort((a, b) => a.name.localeCompare(b.name));
+      return monsters;
     },
   });
 };

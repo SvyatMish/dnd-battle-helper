@@ -29,6 +29,7 @@ export function Input<T extends FieldValues>({
       render={({ field }) => (
         <TextField
           {...field}
+          value={field.value ?? ""}
           id={name}
           label={label}
           fullWidth
@@ -73,6 +74,7 @@ export function TextareaInput<T extends FieldValues>({
       render={({ field }) => (
         <TextField
           {...field}
+          value={field.value ?? ""}
           id={name}
           label={label}
           placeholder={placeholder}
@@ -113,8 +115,8 @@ export function CheckboxInput<T extends FieldValues>({
         <FormControlLabel
           control={
             <Checkbox
-              checked={field.value}
               {...field}
+              checked={Boolean(field.value)}
               id={name}
               disabled={disabled}
               size={size}

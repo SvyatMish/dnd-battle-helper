@@ -8,15 +8,21 @@ import { useAddMonster } from "../queries/bestiary.ts";
 
 type FormValues = Omit<Monster, "id">;
 
+const defaultValues: FormValues = {
+  name: "",
+  actions: "",
+  hp: undefined,
+  ac: undefined,
+  initiative: undefined,
+  isSecret: false,
+};
+
 export const AddMonsterForm: React.FC<{ currentMonsters: Monster[] }> = ({
   currentMonsters,
 }) => {
   const addMonsterMutation = useAddMonster();
   const { handleSubmit, control, reset } = useForm<FormValues>({
-    defaultValues: {
-      name: "",
-      actions: "",
-    },
+    defaultValues,
   });
 
   const onSubmit = useCallback(
@@ -31,6 +37,7 @@ export const AddMonsterForm: React.FC<{ currentMonsters: Monster[] }> = ({
         return;
       }
       await addMonsterMutation.mutateAsync(values);
+      reset();
     },
     [reset, currentMonsters],
   );
