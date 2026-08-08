@@ -18,8 +18,8 @@ import { type BattleMonster, type Monster } from "../types/bestiary.ts";
 import { NumberForm } from "./number-form.tsx";
 import { rollDice } from "../utils/dice.ts";
 
-const diceExpressionPattern =
-  /(\d+)\s*[dдкk]\s*(\d+)(?:\s*([+-])\s*(\d+))?/gi;
+const rollExpressionPattern =
+  /(\d+)\s*[dдкk]\s*(\d+)(?:\s*([+-])\s*(\d+))?|([+-])\s*(\d+)/gi;
 
 export const MonsterBattlePanel: React.FC<{
   monster: BattleMonster;
@@ -36,14 +36,19 @@ export const MonsterBattlePanel: React.FC<{
     const parts: React.ReactNode[] = [];
     let lastIndex = 0;
 
-    for (const match of actions.matchAll(diceExpressionPattern)) {
+    for (const match of actions.matchAll(rollExpressionPattern)) {
       const index = match.index;
       const expression = match[0];
       const key = `${index}-${expression}`;
-      const count = Number(match[1]);
-      const sides = Number(match[2]);
-      const modifierValue = Number(match[4] || 0);
-      const modifier = match[3] === "-" ? -modifierValue : modifierValue;
+      const isDiceExpression = match[1] !== undefined;
+      const count = isDiceExpression ? Number(match[1]) : 1;
+      const sides = isDiceExpression ? Number(match[2]) : 20;
+      const modifierSign = isDiceExpression ? match[3] : match[5];
+      const modifierValue = Number(
+        isDiceExpression ? match[4] || 0 : match[6],
+      );
+      const modifier =
+        modifierSign === "-" ? -modifierValue : modifierValue;
 
       parts.push(actions.slice(lastIndex, index));
       parts.push(
@@ -51,7 +56,11 @@ export const MonsterBattlePanel: React.FC<{
           <button
             type="button"
             className="cursor-pointer font-semibold text-blue-600 underline"
-            title="Бросить кости"
+            title={
+              isDiceExpression
+                ? "Бросить кости"
+                : `Бросить 1d20${expression}`
+            }
             onClick={() => {
               const result = rollDice({ count, sides, modifier });
               setActionRolls((current) => ({ ...current, [key]: result }));
