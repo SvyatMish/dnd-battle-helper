@@ -1,4 +1,9 @@
-import React, { useCallback, type ChangeEvent, useState } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  type ChangeEvent,
+  useState,
+} from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -11,6 +16,10 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { type BattleMonster, type Monster } from "../types/bestiary.ts";
 import { NumberForm } from "./number-form.tsx";
+import { rollDice } from "../utils/dice.ts";
+
+const diceExpressionPattern =
+  /(\d+)\s*[dдкk]\s*(\d+)(?:\s*([+-])\s*(\d+))?/gi;
 
 export const MonsterBattlePanel: React.FC<{
   monster: BattleMonster;
@@ -18,6 +27,52 @@ export const MonsterBattlePanel: React.FC<{
 }> = ({ monster, removeMonster }) => {
   const [initiative, setInitiative] = useState(monster.initiativeRoll);
   const [hp, setHp] = useState(monster.hp);
+  const [actionRolls, setActionRolls] = useState<Record<string, number>>({});
+
+  const parsedActions = useMemo(() => {
+    const actions = monster.actions;
+    if (!actions) return [];
+
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+
+    for (const match of actions.matchAll(diceExpressionPattern)) {
+      const index = match.index;
+      const expression = match[0];
+      const key = `${index}-${expression}`;
+      const count = Number(match[1]);
+      const sides = Number(match[2]);
+      const modifierValue = Number(match[4] || 0);
+      const modifier = match[3] === "-" ? -modifierValue : modifierValue;
+
+      parts.push(actions.slice(lastIndex, index));
+      parts.push(
+        <React.Fragment key={key}>
+          <button
+            type="button"
+            className="cursor-pointer font-semibold text-blue-600 underline"
+            title="Бросить кости"
+            onClick={() => {
+              const result = rollDice({ count, sides, modifier });
+              setActionRolls((current) => ({ ...current, [key]: result }));
+            }}
+          >
+            {expression}
+          </button>
+          {actionRolls[key] !== undefined && (
+            <span className="font-semibold text-green-700">
+              {" "}
+              → {actionRolls[key]}
+            </span>
+          )}
+        </React.Fragment>,
+      );
+      lastIndex = index + expression.length;
+    }
+
+    parts.push(actions.slice(lastIndex));
+    return parts;
+  }, [actionRolls, monster.actions]);
 
   const onInitiativeChange = useCallback(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -143,7 +198,7 @@ export const MonsterBattlePanel: React.FC<{
                     variant="body2"
                     className="mt-1 whitespace-pre-wrap text-gray-700"
                   >
-                    {monster.actions}
+                    {parsedActions}
                   </Typography>
                 </details>
               )}
